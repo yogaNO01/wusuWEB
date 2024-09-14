@@ -23,37 +23,20 @@ export default [
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
+    name: '活动管理',
     icon: 'table',
-    path: '/list',
+    path: '/',
     component: './TableList',
   },
   {
+    name: '门店管理',
+    icon: 'table',
+    path: '/ShopList',
+    component: './ShopList',
+  },
+  {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/',
   },
   {
     path: '*',

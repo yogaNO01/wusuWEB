@@ -1,18 +1,18 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import request from '@/utils/request';
 
-/** 退出登录接口 POST /api/login/outLogin */
+// 乌苏退登接口
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/login/outLogin', {
-    method: 'POST',
+  return request('/api/administrator/logout', {
+    method: 'GET',
     ...(options || {}),
   });
 }
 
 // 乌苏登录接口
-export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/administrator/login', {
+export async function login(body: any, options?: { [key: string]: any }) {
+  return request('/api/administrator/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,12 +23,39 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
 }
 
 
-// 乌苏登录接口
+// 乌苏查看活动列表接口
 export async function getActivityList(params?: { [key: string]: any }) {
-  console.log('options',params);
   return request<API.Activity>('/api/activity', {
-    method: 'Get',
+    method: 'GET',
     params,
     ...(params || {}),
+  });
+}
+
+// 乌苏添加活动列表接口
+export async function addActivity(params: any) {
+  const formData = new FormData();
+  _(params).forEach((value, key: any) => {
+    if (typeof value !== 'function') formData.append(key, value);
+  });
+  return request(`/api/activity`, {
+    method: 'POST',
+    data: formData,
+  });
+}
+
+// 乌苏修改活动列表接口
+export async function editActivity(params: any) {
+  return request('/api/activity/updateActivity', {
+    method: 'PUT',
+    data: params,
+  });
+}
+
+// 乌苏修改活动列表接口
+export async function getShopList(params: any) {
+  return request('/api/activity/getShopList', {
+    method: 'GET',
+    params,
   });
 }

@@ -12,8 +12,7 @@ import {
 import { FormattedMessage } from '@umijs/max';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import { getActivityList, outLogin } from '@/services/ant-design-pro/api';
-import {FormModal} from '../../components/Form/index'
+import { getShopList } from '@/services/ant-design-pro/api';
 import moment from 'moment';
 
 const TableList: React.FC = () => {
@@ -23,61 +22,50 @@ const TableList: React.FC = () => {
   const [currentRow, setCurrentRow] = useState();
 
   const columns = [
+    // {
+    //   title: 'ID',
+    //   dataIndex: 'id',
+    //   search: false
+    // },
     {
-      title: 'ID',
-      dataIndex: 'id',
-      search: false
-    },
-    {
-      title: '活动缩略图',
-      dataIndex: 'icon',
+      title: '门店编号',
+      dataIndex: 'shopno',
       search: false,
-      render: (_: any, record: any) => {
-        return <img src={record.icon} alt="" width={100}/>
-      },
     },
     {
-      title: '活动种类',
-      dataIndex: 'bottle',
-      width: 150,
-      search: true,
-      render: (_: any, record: any) => {
-        switch (record.bottle) {
-          case 1:
-            return '瓶'
-          case 2:
-            return '罐'
-        }
-      },
-    },
-    {
-      title: '活动内容(富文本)',
-      dataIndex: 'content',
-      search: false
-    },
-    {
-      title: '活动内容(纯文本)',
-      dataIndex: 'contenttext',
+      title: '经度',
+      dataIndex: 'lng',
       search: false,
-      width: 200,
     },
     {
-      title: '创建时间',
-      dataIndex: 'begintime',
+      title: '维度',
+      dataIndex: 'lat',
       search: false,
-      width: 100,
-      render: (_: any, record: any) => {
-        return moment(record.begintime*1000).format('YYYY-MM-DD HH:mm:ss')
-      },
     },
     {
-      title: '提交时间',
-      dataIndex: 'endtime',
+      title: '门店地址',
+      dataIndex: 'addr2',
       search: false,
-      width: 100,
-      render: (_: any, record: any) => {
-        return moment(record.endtime*1000).format('YYYY-MM-DD HH:mm:ss')
-      },
+    },
+    {
+      title: '区',
+      dataIndex: 'addr1',
+      search: false,
+    },
+    {
+      title: '市',
+      dataIndex: 'cityname',
+      search: false,
+    },
+    {
+      title: '门店名称',
+      dataIndex: 'shopname',
+      search: false,
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'addrdetail',
+      search: false,
     },
     {
       title: '操作',
@@ -112,12 +100,6 @@ const TableList: React.FC = () => {
   
   return (
     <PageContainer>
-      <FormModal
-        title={modelType == 'add' ? '新增活动' : '修改活动'}
-        visible={createModalOpen}
-        row={currentRow}
-        closeDialog={() => handleModalOpen(false)}
-        ></FormModal>
       <ProTable
         actionRef={actionRef}
         rowKey="key"
@@ -125,9 +107,9 @@ const TableList: React.FC = () => {
           labelWidth: 120,
         }}
         request={async (params) => {
-          const response = await getActivityList({ ...params, bottle: change(params) || 0})
+          const response = await getShopList({ ...params})
           return {
-            data: response?.activitys,
+            data: response?.shops,
             success: true,
           }
         }}
