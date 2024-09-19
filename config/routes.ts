@@ -23,13 +23,13 @@ export default [
     ],
   },
   {
-    name: '活动管理',
+    name: 'welcome',
     icon: 'table',
     path: '/',
     component: './TableList',
   },
   {
-    name: '门店管理',
+    name: 'shop',
     icon: 'table',
     path: '/ShopList',
     component: './ShopList',

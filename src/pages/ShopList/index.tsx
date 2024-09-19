@@ -10,80 +10,76 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Drawer, Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import { getShopList } from '@/services/ant-design-pro/api';
 import moment from 'moment';
 
 const TableList: React.FC = () => {
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  const [modelType, setModelType] = useState<string>('add');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState();
 
   const columns = [
-    // {
-    //   title: 'ID',
-    //   dataIndex: 'id',
-    //   search: false
-    // },
+    {
+      title: '序号',
+      search: false,
+      render: (_: any, record: any, index: number) => {
+        return index+1;
+      },
+    },
     {
       title: '门店编号',
       dataIndex: 'shopno',
-      search: false,
-    },
-    {
-      title: '经度',
-      dataIndex: 'lng',
-      search: false,
-    },
-    {
-      title: '维度',
-      dataIndex: 'lat',
-      search: false,
-    },
-    {
-      title: '门店地址',
-      dataIndex: 'addr2',
-      search: false,
-    },
-    {
-      title: '区',
-      dataIndex: 'addr1',
-      search: false,
+      hideInSearch: true,
     },
     {
       title: '市',
       dataIndex: 'cityname',
-      search: false,
+      hideInSearch: false,
+      hideInTable: true
+    },
+    {
+      title: '区',
+      dataIndex: 'addr1',
+      hideInSearch: false,
+      hideInTable: true
+    },
+    {
+      title: '所属区域',
+      hideInSearch: true,
+      render: (_: any, record: any) => `${record.cityname}-${record.addr1}`,
     },
     {
       title: '门店名称',
       dataIndex: 'shopname',
-      search: false,
+      hideInSearch: false,
+    },
+    {
+      title: '经度',
+      dataIndex: 'lng',
+      hideInSearch: true
+    },
+    {
+      title: '维度',
+      dataIndex: 'lat',
+      hideInSearch: true
     },
     {
       title: '详细地址',
       dataIndex: 'addrdetail',
-      search: false,
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      width:200,
-      render: (_: any, record: any) => [
-        <a
-          key="edit"
-          onClick={() => {
-            handleModalOpen(true);
-            setModelType('edit')
-            setCurrentRow(record);
-          }}
-        >
-          修改
-        </a>
-      ],
-    },
+      hideInSearch: true
+    }
   ];
 
   function change(params: any) {
@@ -100,6 +96,8 @@ const TableList: React.FC = () => {
   
   return (
     <PageContainer>
+      <Modal title="门店数据导入" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      </Modal>
       <ProTable
         actionRef={actionRef}
         rowKey="key"
@@ -118,10 +116,10 @@ const TableList: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleModalOpen(true);
+              setIsModalOpen(true)
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined />导入
           </Button>,
         ]}
         columns={columns}

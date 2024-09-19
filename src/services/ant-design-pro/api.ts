@@ -46,9 +46,13 @@ export async function addActivity(params: any) {
 
 // 乌苏修改活动列表接口
 export async function editActivity(params: any) {
-  return request('/api/activity/updateActivity', {
+  const formData = new FormData();
+  _(params).forEach((value, key: any) => {
+    if (typeof value !== 'function') formData.append(key, value);
+  });
+  return request('/api/activity', {
     method: 'PUT',
-    data: params,
+    data: formData,
   });
 }
 
@@ -57,5 +61,25 @@ export async function getShopList(params: any) {
   return request('/api/activity/getShopList', {
     method: 'GET',
     params,
+  });
+}
+
+// 乌苏活动参与情况
+export async function getActiveDetail(params: any) {
+  return request('/api/activity/useractivitys', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 乌苏活动参与情况
+export async function importAndExport(params: any) {
+  const formData = new FormData();
+  _(params).forEach((value, key: any) => {
+    if (typeof value !== 'function') formData.append(key, value);
+  });
+  return request('/api/activity/importandexport', {
+    method: 'POST',
+    params: formData,
   });
 }
